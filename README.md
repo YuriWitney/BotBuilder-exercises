@@ -12,6 +12,14 @@
     npm start
     ```
 
+## Unit Tests
+
+- To unit test this bot
+
+    ```bash
+    npm run test
+    ```
+
 ## Testing the bot using Bot Framework Emulator
 
 [Bot Framework Emulator](https://github.com/microsoft/botframework-emulator) is a desktop application that allows bot developers to test and debug their bots on localhost or running remotely through a tunnel.
