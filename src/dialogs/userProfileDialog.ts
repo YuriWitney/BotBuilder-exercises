@@ -24,12 +24,14 @@ const USER_PROFILE = 'USER_PROFILE';
 const WATERFALL_DIALOG = 'WATERFALL_DIALOG';
 
 export class UserProfileDialog extends ComponentDialog {
+    public static id: string = 'user-profile';
+
     private userProfile: StatePropertyAccessor<UserProfile>;
 
     constructor(userState: UserState) {
-        super('userProfileDialog');
+        super(UserProfileDialog.id);
 
-        this.userProfile = userState.createProperty(USER_PROFILE);
+        // this.userProfile = userState.createProperty(USER_PROFILE);
 
         this.addDialog(new TextPrompt(NAME_PROMPT));
         this.addDialog(new ChoicePrompt(CHOICE_PROMPT));
