@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 export class UserProfile {
-    public transport: string;
-    public name: string;
-    public age: number;
+  public transport: string
+  public name: string
+  public age: number
 }
