@@ -11,6 +11,7 @@
         "postinstall": "npm run build && node ./deploymentScripts/webConfigPrep.js",
         "start": "tsc --build && node ./lib/index.js",
         "test": "jest --passWithNoTests --no-cache --runInBand",
+        "test:staged": "npm run test --findRelatedTests",
         "watch": "nodemon --watch ./src -e ts --exec \"npm run start\"",
         "lint-staged": "lint-staged",
         "prepare": "husky install"
