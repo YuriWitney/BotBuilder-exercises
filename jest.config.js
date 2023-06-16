@@ -2,6 +2,8 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/**/*.spec.ts',
+    '!<rootDir>/src/index.ts',
+    '!<rootDir>/src/bots/*.ts'
   ],
   coverageDirectory: 'coverage',
   moduleNameMapper: {
