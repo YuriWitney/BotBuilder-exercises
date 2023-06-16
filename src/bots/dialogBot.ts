@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 import { ActivityHandler, type BotState, type ConversationState, type StatePropertyAccessor, type UserState } from 'botbuilder'
-import { type Dialog, type DialogState } from 'botbuilder-dialogs'
-import { type UserProfileDialog } from '../dialogs/userProfileDialog'
+import { DialogSet, DialogTurnStatus, type Dialog, type DialogState } from 'botbuilder-dialogs'
+import { UserProfileDialog } from '../dialogs/userProfileDialog'
 export class DialogBot extends ActivityHandler {
   private readonly conversationState: BotState
   private readonly userState: BotState
@@ -29,8 +29,15 @@ export class DialogBot extends ActivityHandler {
     this.onMessage(async (context, next) => {
       console.log('Running dialog with Message Activity.')
 
-      // Run the Dialog with the new message Activity.
-      await (this.dialog as UserProfileDialog).run(context, this.dialogState)
+      const dialogSet = new DialogSet(this.dialogState)
+      dialogSet.add(this.dialog)
+
+      context.activity.locale = 'pt-BR'
+      const dialogContext = await dialogSet.createContext(context)
+      const results = await dialogContext.continueDialog()
+      if (results.status === DialogTurnStatus.empty) {
+        await dialogContext.beginDialog(UserProfileDialog.id)
+      }
 
       await next()
     })

@@ -1,13 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { type StatePropertyAccessor, type TurnContext, type UserState } from 'botbuilder'
+import { type UserState } from 'botbuilder'
 import {
   ChoiceFactory,
   ChoicePrompt,
   ComponentDialog,
-  ConfirmPrompt,
-  DialogSet,
-  DialogTurnStatus,
   NumberPrompt,
   type PromptValidatorContext,
   TextPrompt,
@@ -15,10 +12,9 @@ import {
   type WaterfallStepContext,
   type DialogTurnResult
 } from 'botbuilder-dialogs'
-import { UserProfile } from '../userProfile'
+import { type UserProfile } from '../userProfile'
 
 const CHOICE_PROMPT = 'CHOICE_PROMPT'
-const CONFIRM_PROMPT = 'CONFIRM_PROMPT'
 const NAME_PROMPT = 'NAME_PROMPT'
 const NUMBER_PROMPT = 'NUMBER_PROMPT'
 // const USER_PROFILE = 'USER_PROFILE'
@@ -27,16 +23,15 @@ const WATERFALL_DIALOG = 'WATERFALL_DIALOG'
 export class UserProfileDialog extends ComponentDialog {
   public static id: string = 'user-profile'
 
-  private readonly userProfile: StatePropertyAccessor<UserProfile>
+  // private readonly userProfile: StatePropertyAccessor<UserProfile>
 
   constructor (userState: UserState) {
     super(UserProfileDialog.id)
 
-    // this.userProfile = userState.createProperty(USER_PROFILE);
+    // this.userProfile = userState.createProperty(USER_PROFILE)
 
     this.addDialog(new TextPrompt(NAME_PROMPT))
     this.addDialog(new ChoicePrompt(CHOICE_PROMPT))
-    this.addDialog(new ConfirmPrompt(CONFIRM_PROMPT))
     this.addDialog(new NumberPrompt(NUMBER_PROMPT, this.agePromptValidator))
 
     this.addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
@@ -51,52 +46,38 @@ export class UserProfileDialog extends ComponentDialog {
     this.initialDialogId = WATERFALL_DIALOG
   }
 
-  /**
-     * The run method handles the incoming activity (in the form of a TurnContext) and passes it through the dialog system.
-     * If no dialog is active, it will start the default dialog.
-     * @param {*} turnContext
-     * @param {*} accessor
-     */
-  public async run (turnContext: TurnContext, accessor: StatePropertyAccessor): Promise<void> {
-    const dialogSet = new DialogSet(accessor)
-    dialogSet.add(this)
-
-    const dialogContext = await dialogSet.createContext(turnContext)
-    const results = await dialogContext.continueDialog()
-    if (results.status === DialogTurnStatus.empty) {
-      await dialogContext.beginDialog(this.id)
-    }
-  }
-
   private async transportStep (stepContext: WaterfallStepContext): Promise<DialogTurnResult<any>> {
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
     // Running a prompt here means the next WaterfallStep will be run when the users response is received.
     return await stepContext.prompt(CHOICE_PROMPT, {
-      choices: ChoiceFactory.toChoices(['Car', 'Bus', 'Bicycle']),
-      prompt: 'Please enter your mode of transport.'
+      choices: ChoiceFactory.toChoices(['Carro', 'Ônibus', 'Bicicleta']),
+      prompt: 'Por favor digite seu meio de transporte atual.'
     })
   }
 
   private async nameStep (stepContext: WaterfallStepContext<UserProfile>): Promise<DialogTurnResult<any>> {
     stepContext.options.transport = stepContext.result.value
-    return await stepContext.prompt(NAME_PROMPT, 'What is your name, human?')
+    return await stepContext.prompt(NAME_PROMPT, 'Como você se chama?')
   }
 
   private async nameConfirmStep (stepContext: WaterfallStepContext<UserProfile>): Promise<DialogTurnResult<any>> {
     stepContext.options.name = stepContext.result
 
     // We can send messages to the user at any point in the WaterfallStep.
-    await stepContext.context.sendActivity(`Thanks ${stepContext.result as string}.`)
+    await stepContext.context.sendActivity(`Obrigado ${stepContext.result as string}.`)
 
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    return await stepContext.prompt(CONFIRM_PROMPT, 'Do you want to give your age?', ['yes', 'no'])
+    return await stepContext.prompt(CHOICE_PROMPT, {
+      prompt: 'Você quer falar sua idade?',
+      choices: ChoiceFactory.toChoices(['Sim', 'Não'])
+    })
   }
 
   private async ageStep (stepContext: WaterfallStepContext): Promise<DialogTurnResult<any>> {
-    if (stepContext.result === true) {
+    if (stepContext.result.value === 'Sim') {
       // User said "yes" so we will be prompting for the age.
       // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is a Prompt Dialog.
-      const promptOptions = { prompt: 'Please enter your age.', retryPrompt: 'The value entered must be greater than 0 and less than 150.' }
+      const promptOptions = { prompt: 'Por favor digite sua idade.', retryPrompt: 'O valor informado precisa ser maior que 0 e menor que 150.' }
 
       return await stepContext.prompt(NUMBER_PROMPT, promptOptions)
     } else {
@@ -108,32 +89,30 @@ export class UserProfileDialog extends ComponentDialog {
   private async confirmStep (stepContext: WaterfallStepContext<UserProfile>): Promise<DialogTurnResult<any>> {
     stepContext.options.age = stepContext.result
 
-    const msg = stepContext.options.age === -1 ? 'No age given.' : `I have your age as ${stepContext.options.age}.`
+    const msg = stepContext.options.age === -1 ? 'Idade não informada.' : `Tenho sua idade: ${stepContext.options.age}.`
 
     // We can send messages to the user at any point in the WaterfallStep.
     await stepContext.context.sendActivity(msg)
 
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is a Prompt Dialog.
-    return await stepContext.prompt(CONFIRM_PROMPT, { prompt: 'Is this okay?' })
+    return await stepContext.prompt(CHOICE_PROMPT, {
+      prompt: 'É essa mesma?',
+      choices: ChoiceFactory.toChoices(['Sim', 'Não'])
+    })
   }
 
   private async summaryStep (stepContext: WaterfallStepContext<UserProfile>): Promise<DialogTurnResult<any>> {
-    if (stepContext.result) {
-      // Get the current profile object from user state.
-      const userProfile = await this.userProfile.get(stepContext.context, new UserProfile())
-      const stepContextOptions = stepContext.options
-      userProfile.transport = stepContextOptions.transport
-      userProfile.name = stepContextOptions.name
-      userProfile.age = stepContextOptions.age
+    if (stepContext.result.value === 'Sim') {
+      const userProfile: UserProfile = stepContext.options
 
-      let msg = `I have your mode of transport as ${userProfile.transport} and your name as ${userProfile.name}.`
+      let msg = `Seu meio de transporte é ${userProfile.transport} e seu nome é ${userProfile.name}.`
       if (userProfile.age !== -1) {
-        msg += ` And age as ${userProfile.age}.`
+        msg += ` E idade ${userProfile.age}.`
       }
 
       await stepContext.context.sendActivity(msg)
     } else {
-      await stepContext.context.sendActivity('Thanks. Your profile will not be kept.')
+      await stepContext.context.sendActivity('Obrigado. Seus dados não serão mantidos.')
     }
 
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is the end.
@@ -141,9 +120,8 @@ export class UserProfileDialog extends ComponentDialog {
   }
 
   private async agePromptValidator (promptContext: PromptValidatorContext<number>): Promise<boolean> {
-    // This condition is our validation rule. You can also change the value at this point.
     if (!promptContext.recognized.value) {
-      throw new Error('Value not recognized')
+      throw new Error('Valor não reconhecido')
     }
     return promptContext.recognized.succeeded && promptContext.recognized.value > 0 && promptContext.recognized.value < 150
   }
