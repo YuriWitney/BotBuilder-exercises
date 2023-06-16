@@ -32,6 +32,7 @@ export class DialogBot extends ActivityHandler {
       const dialogSet = new DialogSet(this.dialogState)
       dialogSet.add(this.dialog)
 
+      context.activity.locale = 'pt-BR'
       const dialogContext = await dialogSet.createContext(context)
       const results = await dialogContext.continueDialog()
       if (results.status === DialogTurnStatus.empty) {
