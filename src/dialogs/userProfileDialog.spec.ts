@@ -6,8 +6,20 @@ import {
   type Activity
 } from 'botbuilder'
 import { DialogTurnStatus, DialogSet } from 'botbuilder-dialogs'
+import * as HandleValidators from '../utils/handle-validators'
 
 import { UserProfileDialog } from '../dialogs/userProfileDialog'
+
+interface SpyTypes {
+  agePromptValidatorSpy: jest.SpyInstance
+}
+
+const makeSpy = (): SpyTypes => {
+  const agePromptValidatorSpy = jest.spyOn(HandleValidators, 'agePromptValidator')
+  return {
+    agePromptValidatorSpy
+  }
+}
 
 describe('UserProfile Dialog Tests', function () {
   it('Should ask user transport preference', (done) => {
@@ -173,6 +185,8 @@ describe('UserProfile Dialog Tests', function () {
   })
 
   it('Should confirm the age', (done) => {
+    const { agePromptValidatorSpy } = makeSpy()
+    agePromptValidatorSpy.mockResolvedValueOnce(true)
     const testData = setCommonData()
 
     const dialogs = new DialogSet(
@@ -233,6 +247,9 @@ describe('UserProfile Dialog Tests', function () {
 
   it('Should summarize the steps', (done) => {
     const testData = setCommonData()
+
+    const { agePromptValidatorSpy } = makeSpy()
+    agePromptValidatorSpy.mockResolvedValueOnce(true)
 
     const dialogs = new DialogSet(
       testData.auraDataAccesor.dialogStateAccessor
@@ -348,6 +365,9 @@ describe('UserProfile Dialog Tests', function () {
   it('Should not confirm the age', (done) => {
     const testData = setCommonData()
 
+    const { agePromptValidatorSpy } = makeSpy()
+    agePromptValidatorSpy.mockResolvedValueOnce(true)
+
     const dialogs = new DialogSet(
       testData.auraDataAccesor.dialogStateAccessor
     )
@@ -411,6 +431,9 @@ describe('UserProfile Dialog Tests', function () {
 
   it('Should not allow an invalid age', (done) => {
     const testData = setCommonData()
+
+    const { agePromptValidatorSpy } = makeSpy()
+    agePromptValidatorSpy.mockResolvedValueOnce(false)
 
     const dialogs = new DialogSet(
       testData.auraDataAccesor.dialogStateAccessor
