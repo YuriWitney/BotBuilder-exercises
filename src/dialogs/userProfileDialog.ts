@@ -6,13 +6,13 @@ import {
   ChoicePrompt,
   ComponentDialog,
   NumberPrompt,
-  type PromptValidatorContext,
   TextPrompt,
   WaterfallDialog,
   type WaterfallStepContext,
   type DialogTurnResult
 } from 'botbuilder-dialogs'
 import { type UserProfile } from '../userProfile'
+import { agePromptValidator } from '../utils/handle-validators'
 
 const CHOICE_PROMPT = 'CHOICE_PROMPT'
 const NAME_PROMPT = 'NAME_PROMPT'
@@ -32,7 +32,7 @@ export class UserProfileDialog extends ComponentDialog {
 
     this.addDialog(new TextPrompt(NAME_PROMPT))
     this.addDialog(new ChoicePrompt(CHOICE_PROMPT))
-    this.addDialog(new NumberPrompt(NUMBER_PROMPT, this.agePromptValidator))
+    this.addDialog(new NumberPrompt(NUMBER_PROMPT, agePromptValidator))
 
     this.addDialog(new WaterfallDialog(WATERFALL_DIALOG, [
       this.transportStep.bind(this),
@@ -117,12 +117,5 @@ export class UserProfileDialog extends ComponentDialog {
 
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is the end.
     return await stepContext.endDialog()
-  }
-
-  private async agePromptValidator (promptContext: PromptValidatorContext<number>): Promise<boolean> {
-    if (!promptContext.recognized.value) {
-      throw new Error('Valor não reconhecido')
-    }
-    return promptContext.recognized.succeeded && promptContext.recognized.value > 0 && promptContext.recognized.value < 150
   }
 }
