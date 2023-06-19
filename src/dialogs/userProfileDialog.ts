@@ -11,7 +11,7 @@ import {
   type WaterfallStepContext,
   type DialogTurnResult
 } from 'botbuilder-dialogs'
-import { type UserProfile } from '../userProfile'
+import { type UserProfile } from '../interfaces/userProfile'
 import { agePromptValidator } from '../utils/handle-validators'
 
 const CHOICE_PROMPT = 'CHOICE_PROMPT'
