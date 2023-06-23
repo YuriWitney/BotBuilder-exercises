@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 import { type UserState } from 'botbuilder'
 import {
   ChoiceFactory,
@@ -47,8 +45,6 @@ export class UserProfileDialog extends ComponentDialog {
   }
 
   private async transportStep (stepContext: WaterfallStepContext): Promise<DialogTurnResult<any>> {
-    // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    // Running a prompt here means the next WaterfallStep will be run when the users response is received.
     return await stepContext.prompt(CHOICE_PROMPT, {
       choices: ChoiceFactory.toChoices(['Carro', 'Ônibus', 'Bicicleta']),
       prompt: 'Por favor digite seu meio de transporte atual.'
@@ -63,10 +59,8 @@ export class UserProfileDialog extends ComponentDialog {
   private async nameConfirmStep (stepContext: WaterfallStepContext<UserProfile>): Promise<DialogTurnResult<any>> {
     stepContext.options.name = stepContext.result
 
-    // We can send messages to the user at any point in the WaterfallStep.
     await stepContext.context.sendActivity(`Obrigado ${stepContext.result as string}.`)
 
-    // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
     return await stepContext.prompt(CHOICE_PROMPT, {
       prompt: 'Você quer falar sua idade?',
       choices: ChoiceFactory.toChoices(['Sim', 'Não'])
@@ -75,13 +69,10 @@ export class UserProfileDialog extends ComponentDialog {
 
   private async ageStep (stepContext: WaterfallStepContext): Promise<DialogTurnResult<any>> {
     if (stepContext.result.value === 'Sim') {
-      // User said "yes" so we will be prompting for the age.
-      // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is a Prompt Dialog.
       const promptOptions = { prompt: 'Por favor digite sua idade.', retryPrompt: 'O valor informado precisa ser maior que 0 e menor que 150.' }
 
       return await stepContext.prompt(NUMBER_PROMPT, promptOptions)
     } else {
-      // User said "no" so we will skip the next step. Give -1 as the age.
       return await stepContext.next(-1)
     }
   }
@@ -91,10 +82,8 @@ export class UserProfileDialog extends ComponentDialog {
 
     const msg = stepContext.options.age === -1 ? 'Idade não informada.' : `Tenho sua idade: ${stepContext.options.age}.`
 
-    // We can send messages to the user at any point in the WaterfallStep.
     await stepContext.context.sendActivity(msg)
 
-    // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is a Prompt Dialog.
     return await stepContext.prompt(CHOICE_PROMPT, {
       prompt: 'É essa mesma?',
       choices: ChoiceFactory.toChoices(['Sim', 'Não'])
@@ -115,7 +104,6 @@ export class UserProfileDialog extends ComponentDialog {
       await stepContext.context.sendActivity('Obrigado. Seus dados não serão mantidos.')
     }
 
-    // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is the end.
     return await stepContext.endDialog()
   }
 }
