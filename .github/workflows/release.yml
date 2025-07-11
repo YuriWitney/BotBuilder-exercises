@@ -45,10 +45,6 @@ jobs:
       - name: Run Unit Tests
         id: unit-tests
         if: success()
-        env:
-          DATABASE_URL: mysql://${{ env.MYSQL_USER }}:${{ env.MYSQL_ROOT_PASSWORD }}@localhost:${{ job.services.mysql.ports[3306] }}/${{ env.MYSQL_DATABASE }}
-          REDIS_HOSTNAME: localhost
-          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
         run: yarn test
 
       - name: Generate artifact of unit tests results
