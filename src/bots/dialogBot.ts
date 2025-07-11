@@ -43,7 +43,6 @@ export class DialogBot extends ActivityHandler {
     })
 
     this.onDialog(async (context, next) => {
-      // Save any state changes. The load happened during the execution of the Dialog.
       await this.conversationState.saveChanges(context, false)
       await this.userState.saveChanges(context, false)
       await next()
