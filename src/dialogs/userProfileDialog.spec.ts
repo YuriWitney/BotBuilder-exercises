@@ -46,7 +46,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .then(() => {
         done()
@@ -77,7 +77,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .send('Carro')
       .assertReply((activity: Activity) => {
@@ -113,7 +113,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .send('Carro')
       .assertReply((activity: Activity) => {
@@ -158,7 +158,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .send('Carro')
       .assertReply((activity: Activity) => {
@@ -210,7 +210,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .send('Carro')
       .assertReply((activity: Activity) => {
@@ -272,7 +272,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .send('Carro')
       .assertReply((activity: Activity) => {
@@ -336,7 +336,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .send('Carro')
       .assertReply((activity: Activity) => {
@@ -389,7 +389,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .send('Carro')
       .assertReply((activity: Activity) => {
@@ -456,7 +456,7 @@ describe('UserProfile Dialog Tests', function () {
       .send('Olá')
       .assertReply((activity: Activity) => {
         const assertText = activity.text != null ? activity.text : null
-        expect(assertText).toBe('Por favor digite seu meio de transporte atual. (1) Carro, (2) Ônibus, or (3) Bicicleta')
+        expect(assertText).toBe('Por favor digite seu meio de transporte atual.\n\n   1. Carro\n   2. Ônibus\n   3. Bicicleta\n   4. Moto')
       })
       .send('Carro')
       .assertReply((activity: Activity) => {
