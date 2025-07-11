@@ -1,3 +1,9 @@
+## 1.1.0 (2025-07-11)
+
+* fix: remove duplicated post ([4ac973f](https://github.com/YuriWitney/BotBuilder-exercises/commit/4ac973f))
+* feat: add server post ([b074491](https://github.com/YuriWitney/BotBuilder-exercises/commit/b074491))
+* test: update tests ([9be8018](https://github.com/YuriWitney/BotBuilder-exercises/commit/9be8018))
+
 # 1.0.0 (2025-07-11)
 
 
