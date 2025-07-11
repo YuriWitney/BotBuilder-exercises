@@ -1,0 +1,140 @@
+name: Release Workflow
+env:
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  MYSQL_ROOT_PASSWORD: haandbib
+  MYSQL_DATABASE: haandbib
+  MYSQL_PASSWORD: haandbib
+  MYSQL_PORT: 3306
+  MYSQL_USER: haandbib
+  DATABASE_URL: mysql://root:haandbib@localhost:3306/haandbib
+  PORT: 3001
+  AUTH_SESSION_TTL: 10
+  AUTH_SECRET: 'secret'
+  DEFAULT_PASSWORD: 'any_pass'
+  JWT_SALT: 12
+  MAILER_HOST: smtp.mailtrap.io
+  MAILER_USERNAME: 26c63e44a4e059
+  MAILER_PASSWORD: 0775dcf33fa133
+  MAILER_PORT: 2525
+  RESET_PASSWORD_BASE_URL: http://localhost:3000
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  release:
+    name: Generate Release notes, Run tests and deploy to homolog environment (Heroku)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    services:
+      redis:
+        image: redis:alpine3.13
+        ports:
+          - 6379
+      mysql:
+        image: bitnami/mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+          MYSQL_AUTHENTICATION_PLUGIN: mysql_native_password
+        ports:
+          - 3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    steps:
+      - uses: actions/checkout@v2
+      - run: git fetch --prune --unshallow
+
+      - name: Use nodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Run ESLint to check the code style
+        if: success()
+        run: yarn lint
+
+      - name: Run Unit Tests
+        id: unit-tests
+        if: success()
+        env:
+          DATABASE_URL: mysql://${{ env.MYSQL_USER }}:${{ env.MYSQL_ROOT_PASSWORD }}@localhost:${{ job.services.mysql.ports[3306] }}/${{ env.MYSQL_DATABASE }}
+          REDIS_HOSTNAME: localhost
+          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
+        run: yarn test:unit
+
+      - name: Generate artifact of unit tests results
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-tests-artifact
+          path: |
+            html-report
+            !html-report/functional.html
+            !html-report/jest-html-reporters-attach/functional
+
+      - name: Check unit tests failures
+        if: steps.unit-tests.outcome != 'success'
+        run: exit 1
+
+      - name: Run Integration Tests
+        id: functional-tests
+        env:
+          DATABASE_URL: mysql://${{ env.MYSQL_USER }}:${{ env.MYSQL_ROOT_PASSWORD }}@localhost:${{ job.services.mysql.ports[3306] }}/${{ env.MYSQL_DATABASE }}
+          REDIS_HOSTNAME: localhost
+          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
+        run: yarn test:functional
+
+      - name: Generate artifact of functional tests results
+        uses: actions/upload-artifact@v4
+        with:
+          name: functional-tests-artifact
+          path: |
+            html-report
+            !html-report/unit.html
+            !html-report/jest-html-reporters-attach/unit
+
+      - name: Check functional tests failures
+        if: steps.functional-tests.outcome != 'success'
+        run: exit 1
+
+      - name: Generate new release
+        id: semantic-release
+        uses: codfish/semantic-release-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: 'Install Heroku CLI'
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: deploy application on homolog environment (Heroku)
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: 'haand-bib-backend'
+          heroku_email: 'yuriwfbarros@gmail.com'
