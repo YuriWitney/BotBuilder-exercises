@@ -83,7 +83,3 @@ server.post('/api/messages', async (req, res, _next) => {
   // Route received a request to adapter for processing
   await adapter.process(req, res, async (context) => { await bot.run(context) })
 })
-server.post('/api/messages', async (req, res, _next) => {
-  // Route received a request to adapter for processing
-  await adapter.process(req, res, async (context) => { await bot.run(context) })
-})
