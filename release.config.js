@@ -156,6 +156,7 @@ module.exports = {
     '(RC)+([0-9])?({+([0-9])})',
     '(sprint)+([0-9])?({+([0-9])})'
   ],
+  githubToken: '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',
   verifyConditions,
   analyzeCommits,
   verifyRelease,
