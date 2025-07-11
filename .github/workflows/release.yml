@@ -1,6 +1,6 @@
 name: Release Workflow
 env:
-  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
   AUTH_SECRET: "secret"
   DEFAULT_PASSWORD: "any_pass"
 
@@ -64,4 +64,4 @@ jobs:
         id: semantic-release
         uses: codfish/semantic-release-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
