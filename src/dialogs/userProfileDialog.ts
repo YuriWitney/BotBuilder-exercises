@@ -47,8 +47,6 @@ export class UserProfileDialog extends ComponentDialog {
   }
 
   private async transportStep (stepContext: WaterfallStepContext): Promise<DialogTurnResult<any>> {
-    // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
-    // Running a prompt here means the next WaterfallStep will be run when the users response is received.
     return await stepContext.prompt(CHOICE_PROMPT, {
       choices: ChoiceFactory.toChoices(['Carro', 'Ônibus', 'Bicicleta']),
       prompt: 'Por favor digite seu meio de transporte atual.'
