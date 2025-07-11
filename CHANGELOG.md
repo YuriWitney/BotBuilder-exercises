@@ -1,3 +1,16 @@
+## [1.4.0](https://github.com/YuriWitney/BotBuilder-exercises/compare/v1.3.0...v1.4.0) (2025-07-11)
+
+
+### :sparkles: New Features
+
+* add motocycle value to transportSteps ([8aa52ff](https://github.com/YuriWitney/BotBuilder-exercises/commit/8aa52ff1a47d6a5e1ba0a476d52421ffa91c1baf))
+* update maximum age to 100 ([3097361](https://github.com/YuriWitney/BotBuilder-exercises/commit/3097361fa2f75e971a796117be7f61f5dc1f8c11))
+
+
+### :white_check_mark: Tests
+
+* add motocycle value to transportSteps ([6532bb6](https://github.com/YuriWitney/BotBuilder-exercises/commit/6532bb6bb13cb749055360e7bd8bf43ee7c5cc26))
+
 ## [1.3.0](https://github.com/YuriWitney/BotBuilder-exercises/compare/v1.2.0...v1.3.0) (2025-07-11)
 
 
