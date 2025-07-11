@@ -1,3 +1,9 @@
+## 1.2.0 (2025-07-11)
+
+* fix: remove duplicated post ([94b7270](https://github.com/YuriWitney/BotBuilder-exercises/commit/94b7270))
+* feat: add server post ([c715b13](https://github.com/YuriWitney/BotBuilder-exercises/commit/c715b13))
+* chore: add commitlint ([976e873](https://github.com/YuriWitney/BotBuilder-exercises/commit/976e873))
+
 ## 1.1.0 (2025-07-11)
 
 * fix: remove duplicated post ([4ac973f](https://github.com/YuriWitney/BotBuilder-exercises/commit/4ac973f))
