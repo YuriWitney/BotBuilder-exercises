@@ -61,7 +61,6 @@ export class UserProfileDialog extends ComponentDialog {
   private async nameConfirmStep (stepContext: WaterfallStepContext<UserProfile>): Promise<DialogTurnResult<any>> {
     stepContext.options.name = stepContext.result
 
-    // We can send messages to the user at any point in the WaterfallStep.
     await stepContext.context.sendActivity(`Obrigado ${stepContext.result as string}.`)
 
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog; here it is a Prompt Dialog.
