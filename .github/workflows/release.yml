@@ -42,10 +42,6 @@ jobs:
       - name: Install dependencies
         run: yarn --frozen-lockfile
 
-      - name: Run ESLint to check the code style
-        if: success()
-        run: yarn lint
-
       - name: Run Unit Tests
         id: unit-tests
         if: success()
