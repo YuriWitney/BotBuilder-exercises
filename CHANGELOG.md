@@ -1,3 +1,19 @@
+## [1.5.0](https://github.com/YuriWitney/BotBuilder-exercises/compare/v1.4.0...v1.5.0) (2025-08-01)
+
+
+### :sparkles: New Features
+
+* add new button ([59e8eea](https://github.com/YuriWitney/BotBuilder-exercises/commit/59e8eea9a0d3d8a04a2b4e5216a0a6bf47f1dabb))
+* remove unused scripts ([518ab08](https://github.com/YuriWitney/BotBuilder-exercises/commit/518ab0869186019cbdde5b0df573b6400feed0a3))
+* update script ([3d1538f](https://github.com/YuriWitney/BotBuilder-exercises/commit/3d1538fe2192ec295fa1ec18689af35243d41423))
+* update script ([20be668](https://github.com/YuriWitney/BotBuilder-exercises/commit/20be668afde8dfc1cbc7617cbc807ce600709c3d))
+
+
+### :bug: Fixes
+
+* remove unused button ([dc281e3](https://github.com/YuriWitney/BotBuilder-exercises/commit/dc281e3bb31671c4582ca76456085f090e87274e))
+* remove unused script ([cb90732](https://github.com/YuriWitney/BotBuilder-exercises/commit/cb90732827751063fa7f742408b21effddbf1c6e))
+
 ## [1.4.0](https://github.com/YuriWitney/BotBuilder-exercises/compare/v1.3.0...v1.4.0) (2025-07-11)
 
 

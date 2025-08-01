@@ -1,6 +1,6 @@
 {
     "name": "multiturn-prompts-bot",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "description": "A Bot Builder with multiturn prompts sample",
     "author": "Yuri Barros",
     "license": "MIT",
