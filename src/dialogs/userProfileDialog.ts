@@ -75,7 +75,6 @@ export class UserProfileDialog extends ComponentDialog {
 
       return await stepContext.prompt(NUMBER_PROMPT, promptOptions)
     } else {
-      // User said "no" so we will skip the next step. Give -1 as the age.
       return await stepContext.next(-1)
     }
   }
