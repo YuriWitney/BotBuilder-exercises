@@ -75,7 +75,6 @@ export class UserProfileDialog extends ComponentDialog {
 
       return await stepContext.prompt(NUMBER_PROMPT, promptOptions)
     } else {
-      // User said "no" so we will skip the next step. Give -1 as the age.
       return await stepContext.next(-1)
     }
   }
@@ -91,7 +90,7 @@ export class UserProfileDialog extends ComponentDialog {
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is a Prompt Dialog.
     return await stepContext.prompt(CHOICE_PROMPT, {
       prompt: 'É essa mesma?',
-      choices: ChoiceFactory.toChoices(['Sim', 'Não'])
+      choices: ChoiceFactory.toChoices(['Sim', 'Não', 'talvez'])
     })
   }
 
