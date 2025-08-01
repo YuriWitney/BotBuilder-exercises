@@ -90,7 +90,7 @@ export class UserProfileDialog extends ComponentDialog {
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is a Prompt Dialog.
     return await stepContext.prompt(CHOICE_PROMPT, {
       prompt: 'É essa mesma?',
-      choices: ChoiceFactory.toChoices(['Sim', 'Não'])
+      choices: ChoiceFactory.toChoices(['Sim', 'Não', 'talvez'])
     })
   }
 
