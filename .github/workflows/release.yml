@@ -19,6 +19,11 @@ jobs:
         node-version: [20.x]
 
     steps:
+      - name: Generate new release
+        id: semantic-release
+        uses: codfish/semantic-release-action@master
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - uses: actions/checkout@v2
       - run: git fetch --prune --unshallow
 
@@ -59,9 +64,3 @@ jobs:
       - name: Check unit tests failures
         if: steps.unit-tests.outcome != 'success'
         run: exit 1
-
-      - name: Generate new release
-        id: semantic-release
-        uses: codfish/semantic-release-action@master
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
