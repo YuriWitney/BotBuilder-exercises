@@ -84,7 +84,6 @@ export class UserProfileDialog extends ComponentDialog {
 
     const msg = stepContext.options.age === -1 ? 'Idade não informada.' : `Tenho sua idade: ${stepContext.options.age}.`
 
-    // We can send messages to the user at any point in the WaterfallStep.
     await stepContext.context.sendActivity(msg)
 
     // WaterfallStep always finishes with the end of the Waterfall or with another dialog, here it is a Prompt Dialog.
