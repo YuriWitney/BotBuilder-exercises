@@ -1,3 +1,15 @@
+## [1.6.0](https://github.com/YuriWitney/BotBuilder-exercises/compare/v1.5.0...v1.6.0) (2025-08-08)
+
+
+### :sparkles: New Features
+
+* add new message ([e81c91a](https://github.com/YuriWitney/BotBuilder-exercises/commit/e81c91a8e757532f220490e1ceee3580c8c6f96f))
+
+
+### :bug: Fixes
+
+* remove duplicated message ([36dce16](https://github.com/YuriWitney/BotBuilder-exercises/commit/36dce1636aaaaf8a759bee9ef8d0b5a88d97b2bf))
+
 ## [1.5.0](https://github.com/YuriWitney/BotBuilder-exercises/compare/v1.4.0...v1.5.0) (2025-08-01)
 
 
